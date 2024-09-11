@@ -6,17 +6,6 @@ import { Database } from "bun:sqlite";
 const app = new Hono();
 
 app.use("/api/*", cors());
-app.use(
-  "/api2/*",
-  cors({
-    origin: "http://example.com",
-    allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests"],
-    allowMethods: ["POST", "GET", "OPTIONS"],
-    exposeHeaders: ["Content-Length", "X-Kuma-Revision"],
-    maxAge: 600,
-    credentials: true,
-  }),
-);
 
 const db = new Database("local.db", { create: true });
 
@@ -25,15 +14,6 @@ const db = new Database("local.db", { create: true });
 // );
 // create.run();
 //let insert = db.query('INSERT INTO contacts )
-
-// contacts
-// contactId - will have to get incremented based on amount in db
-// firstName - required
-// lastName - required
-// phoneNumber - required because its a phonebook
-// address -
-// email -
-
 app.use("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
 
 app.get("/api/contacts", (c) => {
@@ -56,13 +36,13 @@ let insertData = db.transaction((dataArray) => {
 app.post("/api/contacts", async (c) => {
   const data = await c.req.json();
 
-  insertData([
-    {
-      $firstName: data.firstName,
-      $lastName: data.lastName,
-      $phoneNumber: data.phoneNumber,
-    },
-  ]);
+  // insertData([
+  //   {
+  //     $firstName: data.firstName,
+  //     $lastName: data.lastName,
+  //     $phoneNumber: data.phoneNumber,
+  //   },
+  // ]);
 
   c.status(200);
 
@@ -80,7 +60,7 @@ let deleteData = db.transaction((data) => {
 app.delete("/api/contacts", async (c) => {
   const data = await c.req.json();
 
-  deleteData(data);
+  // deleteData(data);
 
   c.status(200);
 
